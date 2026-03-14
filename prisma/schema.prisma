@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  image       String
+  category    String      // "papelaria" | "brinquedo"
+  stock       Int         @default(0)
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  total         Float
+  status        String      @default("pendente") // pendente | pago | concluido | cancelado
+  paymentMethod String      @default("pix")      // pix | cartao | dinheiro
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  unitPrice Float
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+}
+
+model Appointment {
+  id           Int      @id @default(autoincrement())
+  name         String
+  cpf          String
+  birthDate    String
+  fatherName   String
+  motherName   String
+  guardianCpf  String?
+  phone        String
+  email        String?
+  date         DateTime
+  time         String
+  service      String   // "rg_primeira_via" | "rg_segunda_via" | "foto_3x4" | "copia_autenticada"
+  status       String   @default("pendente") // pendente | confirmado | concluido | cancelado
+  notes        String?
+  createdAt    DateTime @default(now())
+}
+
+model PrintJob {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String?
+  fileName  String
+  copies    Int      @default(1)
+  colorMode String   @default("pb")   // pb | colorido
+  paperSize String   @default("A4")   // A4 | A3 | Carta | Oficio
+  sided     String   @default("frente") // frente | frente_verso
+  price     Float
+  status    String   @default("pendente") // pendente | em_andamento | pronto | entregue
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model PhotoRevelation {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String?
+  items     String   // JSON: [{ size, option?, quantity, unitPrice, subtotal, label }]
+  fileNames String   // JSON: ["file1.jpg", "file2.jpg"]
+  total     Float
+  status    String   @default("pendente") // pendente | em_andamento | pronto | entregue
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model Resume {
+  id              Int      @id @default(autoincrement())
+  fullName        String
+  birthDate       String
+  maritalStatus   String
+  nationality     String
+  address         String
+  city            String
+  phone           String
+  email           String
+  cnh             String?
+  objective       String
+  educationLevel  String
+  course          String?
+  institution     String?
+  conclusionYear  String?
+  experiences     String   // JSON array of experiences
+  skills          String   // comma separated
+  status          String   @default("pendente") // pendente | pago | pronto | entregue
+  paymentMethod   String   @default("pix")
+  price           Float    @default(10.0)
+  comprovantePath String?  // comprovante de pagamento (enviado antes do formulário)
+  createdAt       DateTime @default(now())
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
+model CashRegister {
+  id          Int      @id @default(autoincrement())
+  type        String   // "venda" | "impressao" | "servico" | "entrada" | "saida"
+  description String
+  amount      Float
+  method      String?  // "pix" | "cartao" | "dinheiro"
+  createdAt   DateTime @default(now())
+}
