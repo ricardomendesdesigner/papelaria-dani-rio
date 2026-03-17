@@ -1,8 +1,15 @@
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: "Stripe não configurado" },
+        { status: 503 }
+      );
+    }
+    const stripe = getStripe();
     const body = await request.json();
     const { items, customerName, customerPhone, customerEmail, orderId } = body;
 

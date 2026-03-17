@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -10,6 +10,7 @@ export async function POST() {
       );
     }
 
+    const stripe = getStripe();
     const paymentIntent = await stripe.paymentIntents.create({
       amount: 1000, // R$ 10,00 em centavos
       currency: "brl",
