@@ -2,7 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
-import { put } from "@vercel/blob";
+import { v2 as cloudinary } from "cloudinary";
+
+function isCloudinaryConfigured() {
+  return (
+    !!process.env.CLOUDINARY_CLOUD_NAME &&
+    !!process.env.CLOUDINARY_API_KEY &&
+    !!process.env.CLOUDINARY_API_SECRET
+  );
+}
+
+function configureCloudinary() {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,22 +40,31 @@ export async function POST(request: NextRequest) {
     const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    // Vercel serverless filesystem is read-only. Use Blob in production.
-    if (process.env.VERCEL) {
-      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    // Production (e qualquer ambiente serverless): upload via Cloudinary
+    if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+      if (!isCloudinaryConfigured()) {
         return NextResponse.json(
-          { error: "Upload não configurado (BLOB_READ_WRITE_TOKEN ausente)" },
+          {
+            error:
+              "Upload não configurado. Defina CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY e CLOUDINARY_API_SECRET.",
+          },
           { status: 503 }
         );
       }
 
-      const blob = await put(`products/${fileName}`, file, {
-        access: "public",
-        contentType: file.type,
-        addRandomSuffix: false,
+      configureCloudinary();
+
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const dataUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+      const result = await cloudinary.uploader.upload(dataUrl, {
+        folder: "products",
+        public_id: fileName.replace(/\.[^.]+$/, ""),
+        resource_type: "image",
       });
 
-      return NextResponse.json({ url: blob.url }, { status: 201 });
+      return NextResponse.json({ url: result.secure_url }, { status: 201 });
     }
 
     // Local dev: save into /public/products
