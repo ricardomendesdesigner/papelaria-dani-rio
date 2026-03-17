@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   User,
@@ -54,7 +54,7 @@ const educationLevels = [
 
 const cnhOptions = ["Não possuo", "A", "B", "A/B", "C", "D", "E", "A/C", "A/D", "A/E"];
 
-export default function CurriculoPage() {
+function CurriculoPageContent() {
   const [paymentDone, setPaymentDone] = useState(false);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -125,7 +125,7 @@ export default function CurriculoPage() {
 
   const updateExperience = (index: number, field: keyof Experience, value: string | boolean) => {
     const updated = [...experiences];
-    (updated[index] as Record<string, string | boolean>)[field] = value;
+    (updated[index] as unknown as Record<string, string | boolean>)[field] = value;
     if (field === "current" && value === true) {
       updated[index].endDate = "";
     }
@@ -1123,5 +1123,17 @@ function ResumePreviewContent({
       </div>
       </div>
     </div>
+  );
+}
+
+export default function CurriculoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-white flex items-center justify-center">
+        <span className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full" />
+      </div>
+    }>
+      <CurriculoPageContent />
+    </Suspense>
   );
 }
