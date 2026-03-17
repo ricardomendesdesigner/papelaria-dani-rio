@@ -116,13 +116,13 @@ export default function AdminProdutosPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Tem certeza que deseja excluir?")) return;
+    if (!confirm("Tem certeza que deseja desativar este produto? Ele não aparecerá mais na loja, mas continuará nos pedidos antigos.")) return;
     const res = await fetch(`/api/products?id=${id}`, { method: "DELETE" });
     if (res.ok) {
-      toast.success("Produto excluído!");
+      toast.success("Produto desativado!");
       fetchProducts();
     } else {
-      toast.error("Erro ao excluir.");
+      toast.error("Erro ao desativar produto.");
     }
   };
 

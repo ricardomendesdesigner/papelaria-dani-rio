@@ -65,8 +65,13 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get("id");
     if (!id) return NextResponse.json({ error: "ID necessário" }, { status: 400 });
 
-    await prisma.product.delete({ where: { id: parseInt(id) } });
-    return NextResponse.json({ success: true });
+    // Em vez de deletar de verdade (que quebra FKs em pedidos),
+    // marcamos o produto como inativo (soft delete).
+    await prisma.product.update({
+      where: { id: parseInt(id) },
+      data: { active: false },
+    });
+    return NextResponse.json({ success: true, softDeleted: true });
   } catch (error) {
     console.error("Error deleting product:", error);
     return NextResponse.json({ error: "Erro ao deletar produto" }, { status: 500 });
