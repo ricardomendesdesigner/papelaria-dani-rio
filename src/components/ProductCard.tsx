@@ -41,7 +41,7 @@ export default function ProductCard({
   return (
     <div className="card group">
       <div className="relative overflow-hidden aspect-square bg-gradient-to-br from-primary-50 to-primary-100">
-        {image && image.startsWith("/") ? (
+        {image ? (
           <Image
             src={image}
             alt={name}

@@ -259,7 +259,7 @@ export default function AdminProdutosPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary-400 flex flex-col items-center justify-center cursor-pointer transition-colors bg-gray-50 hover:bg-primary-50 overflow-hidden flex-shrink-0"
               >
-                {form.image && form.image.startsWith("/") ? (
+                {form.image ? (
                   <Image
                     src={form.image}
                     alt="Preview"
@@ -290,7 +290,7 @@ export default function AdminProdutosPage() {
                 <p className="font-medium text-gray-700 mb-1">Envie uma foto do produto</p>
                 <p>Formatos aceitos: JPG, PNG, WebP, GIF</p>
                 <p>A imagem será exibida na loja para os clientes.</p>
-                {form.image && form.image.startsWith("/") && (
+                {form.image && (
                   <button
                     type="button"
                     onClick={() => setForm({ ...form, image: "" })}
@@ -347,7 +347,7 @@ export default function AdminProdutosPage() {
                   <tr key={product.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {product.image && product.image.startsWith("/") ? (
+                        {product.image ? (
                           <Image
                             src={product.image}
                             alt={product.name}

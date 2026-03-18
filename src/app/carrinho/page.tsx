@@ -49,7 +49,7 @@ export default function CarrinhoPage() {
             {items.map((item) => (
               <div key={item.id} className="card p-4 flex items-center gap-4">
                 <div className="w-20 h-20 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden relative">
-                  {item.image && item.image.startsWith("/") ? (
+                  {item.image ? (
                     <Image
                       src={item.image}
                       alt={item.name}

@@ -660,7 +660,7 @@ export default function CheckoutPage() {
                       className="flex items-center justify-between text-sm"
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        {item.image && item.image.startsWith("/") ? (
+                        {item.image ? (
                           <div className="w-8 h-8 relative rounded overflow-hidden flex-shrink-0">
                             <Image
                               src={item.image}
