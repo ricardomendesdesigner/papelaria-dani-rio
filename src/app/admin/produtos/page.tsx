@@ -155,6 +155,7 @@ export default function AdminProdutosPage() {
           { value: "all", label: "Todos" },
           { value: "papelaria", label: "Papelaria" },
           { value: "brinquedo", label: "Brinquedos" },
+          { value: "grafica", label: "Gráfica" },
         ].map((opt) => (
           <button
             key={opt.value}
@@ -210,6 +211,7 @@ export default function AdminProdutosPage() {
               >
                 <option value="papelaria">Papelaria</option>
                 <option value="brinquedo">Brinquedo</option>
+                <option value="grafica">Gráfica</option>
               </select>
             </div>
             <div>

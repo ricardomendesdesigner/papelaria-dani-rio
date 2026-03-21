@@ -17,12 +17,14 @@ import {
   Camera,
   ChevronDown,
   Briefcase,
+  Palette,
 } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Início", icon: Home },
   { href: "/papelaria", label: "Papelaria", icon: Store },
   { href: "/brinquedos", label: "Brinquedos", icon: Gamepad2 },
+  { href: "/grafica", label: "Gráfica", icon: Palette },
 ];
 
 const servicosLinks = [

@@ -29,6 +29,7 @@ export default function Footer() {
               {[
                 { href: "/papelaria", label: "Papelaria" },
                 { href: "/brinquedos", label: "Brinquedos" },
+                { href: "/grafica", label: "Gráfica" },
                 { href: "/impressao", label: "Impressão" },
                 { href: "/revelacao", label: "Revelação" },
                 { href: "/agendamento", label: "Agendamento" },

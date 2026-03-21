@@ -12,6 +12,7 @@ import {
   Clock,
   FileText,
   Camera,
+  Palette,
 } from "lucide-react";
 
 const categories = [
@@ -30,6 +31,14 @@ const categories = [
     href: "/brinquedos",
     color: "from-purple-400 to-purple-600",
     emoji: "🧸",
+  },
+  {
+    title: "Gráfica",
+    description: "Cartões, banners, adesivos e materiais personalizados",
+    icon: Palette,
+    href: "/grafica",
+    color: "from-teal-400 to-cyan-600",
+    emoji: "🎨",
   },
   {
     title: "Impressão",

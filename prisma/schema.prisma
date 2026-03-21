@@ -13,7 +13,7 @@ model Product {
   description String
   price       Float
   image       String
-  category    String      // "papelaria" | "brinquedo"
+  category    String      // "papelaria" | "brinquedo" | "grafica"
   stock       Int         @default(0)
   active      Boolean     @default(true)
   createdAt   DateTime    @default(now())
