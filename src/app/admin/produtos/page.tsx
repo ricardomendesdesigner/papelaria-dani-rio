@@ -49,15 +49,6 @@ export default function AdminProdutosPage() {
     fetchProducts();
   }, []);
 
-  // Filtro inicial a partir de ?category=grafica|papelaria|brinquedo (ex.: link do admin Gráfica)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const cat = new URLSearchParams(window.location.search).get("category");
-    if (cat === "papelaria" || cat === "brinquedo" || cat === "grafica") {
-      setFilter(cat);
-    }
-  }, []);
-
   const handleSave = async () => {
     if (!form.name || !form.price) {
       toast.error("Preencha nome e preço!");
