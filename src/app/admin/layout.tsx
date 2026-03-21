@@ -16,12 +16,14 @@ import {
   ShieldCheck,
   FileText,
   Camera,
+  Palette,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/produtos", label: "Produtos", icon: Package },
+  { href: "/admin/grafica", label: "Gráfica", icon: Palette },
   { href: "/admin/curriculos", label: "Currículos", icon: FileText },
   { href: "/admin/vendas", label: "Vendas", icon: ShoppingCart },
   { href: "/admin/agendamentos", label: "Agendamentos", icon: CalendarCheck },
