@@ -120,6 +120,34 @@ export default function AdminCaixaPage() {
     }
   };
 
+  const handleZerarCaixa = async () => {
+    if (
+      !confirm(
+        "ATENÇÃO: Isso apaga TODAS as movimentações do caixa (histórico completo). Deseja continuar?"
+      )
+    ) {
+      return;
+    }
+    if (!confirm("Confirma zerar o caixa? Esta ação não pode ser desfeita.")) {
+      return;
+    }
+
+    const res = await fetch("/api/admin/cash-register?all=true", {
+      method: "DELETE",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      toast.success(
+        data.deleted != null
+          ? `Caixa zerado (${data.deleted} registro(s) removidos).`
+          : "Caixa zerado!"
+      );
+      fetchEntries();
+    } else {
+      toast.error(data.error || "Erro ao zerar o caixa.");
+    }
+  };
+
   const incomeTotal = entries
     .filter((e) => e.amount > 0)
     .reduce((acc, e) => acc + e.amount, 0);
@@ -129,17 +157,27 @@ export default function AdminCaixaPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 className="font-display font-bold text-2xl text-gray-800">
           Sistema de Caixa
         </h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="btn-primary flex items-center gap-2 !py-2 !px-4 text-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Nova Movimentação
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleZerarCaixa}
+            className="flex items-center gap-2 py-2 px-4 text-sm rounded-xl border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
+          >
+            <Ban className="w-4 h-4" />
+            Zerar caixa
+          </button>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="btn-primary flex items-center gap-2 !py-2 !px-4 text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Movimentação
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

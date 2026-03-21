@@ -63,6 +63,18 @@ export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+    const all = searchParams.get("all");
+
+    // Zerar todo o caixa (apaga todos os registros)
+    if (all === "true" || all === "1") {
+      const result = await prisma.cashRegister.deleteMany({});
+      return NextResponse.json({
+        success: true,
+        deleted: result.count,
+        reset: true,
+      });
+    }
+
     if (!id) {
       return NextResponse.json({ error: "ID necessário" }, { status: 400 });
     }
