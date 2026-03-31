@@ -39,22 +39,13 @@ npm run setup
 npm run dev
 ```
 
-O site estará disponível em [http://localhost:3000](http://localhost:3000).
-
-## Painel Admin
-
-Acesse o painel em [http://localhost:3000/admin](http://localhost:3000/admin).
-
-- **Usuário:** admin
-- **Senha:** admin123
-
 ## Configuração
 
 Edite o arquivo `.env` para personalizar:
 
 ```env
 DATABASE_URL="file:./dev.db"
-ADMIN_PASSWORD="admin123"
+ADMIN_PASSWORD="........"
 WHATSAPP_NUMBER="5521999999999"
 NEXT_PUBLIC_WHATSAPP_NUMBER="5521999999999"
 ```
